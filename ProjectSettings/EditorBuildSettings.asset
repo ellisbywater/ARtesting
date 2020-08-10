@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ARTest.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 999959544b4dfed4ba4d9df8411de7af, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c2df18d18b305b9478c87117b58842b3, type: 2}
