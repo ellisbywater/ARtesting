@@ -2,19 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class PlaceBeacon : MonoBehaviour
+public class BeaconController : MonoBehaviour
 {
-    
+    public static BeaconController Instance;
+    public GameController GameController;
     public GameObject beaconPrefab;
     public ARRaycastManager raycastManager;
     private Camera _playerCamera;
 
-    private bool _beaconSet = false;
-    private GameObject _activeBeacon;
+    [FormerlySerializedAs("_beaconSet")] public bool beaconSet = false;
+    public GameObject activeBeacon {  private set;  get; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -23,7 +30,7 @@ public class PlaceBeacon : MonoBehaviour
 
     public void OnCreateBeaconButton()
     {
-        Ray rayToCast = _playerCamera.ViewportPointToRay(new Vector2(.5f, .5f));
+        Ray rayToCast = _playerCamera.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
         List<ARRaycastHit> hitPoints = new List<ARRaycastHit>();
         raycastManager.Raycast(rayToCast, hitPoints, TrackableType.Planes);
         
@@ -33,13 +40,13 @@ public class PlaceBeacon : MonoBehaviour
             /*transform.rotation = pose.rotation;
             transform.position = pose.position;*/
 
-            if (!_beaconSet) 
+            if (!beaconSet) 
             {
                 CreateBeacon(pose);
             }
             else
             {
-                _activeBeacon.transform.position = pose.position;
+                activeBeacon.transform.position = pose.position;
             }
         }
     }
@@ -51,15 +58,16 @@ public class PlaceBeacon : MonoBehaviour
 
     private void CreateBeacon(Pose pose)
     {
-        _activeBeacon = Instantiate(beaconPrefab, pose.position, pose.rotation);
-        Debug.Log("Active beacon is : ", _activeBeacon);
-        _beaconSet = true;
+        activeBeacon = Instantiate(beaconPrefab, pose.position, pose.rotation);
+        Debug.Log("Active beacon is : ", activeBeacon);
+        beaconSet = true;
+        GameController.Instance.activeBeacon = activeBeacon;
     }
 
     private void DeleteBeacon()
     {
-        Destroy(_activeBeacon);
-        _beaconSet = false;
+        Destroy(activeBeacon);
+        beaconSet = false;
     }
     
 }

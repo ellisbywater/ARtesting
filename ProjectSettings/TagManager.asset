@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BeaconStateUI
+  - CombatStateUI
+  - MenuStateUI
+  - StateUI
   layers:
   - Default
   - TransparentFX
