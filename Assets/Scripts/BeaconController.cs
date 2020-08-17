@@ -10,8 +10,9 @@ using UnityEngine.XR.ARSubsystems;
 public class BeaconController : MonoBehaviour
 {
     public static BeaconController Instance;
-    public GameController GameController;
     public GameObject beaconPrefab;
+    public GameObject beaconUI;
+    public GameObject nextUi;
     public ARRaycastManager raycastManager;
     private Camera _playerCamera;
 
@@ -40,14 +41,15 @@ public class BeaconController : MonoBehaviour
             /*transform.rotation = pose.rotation;
             transform.position = pose.position;*/
 
-            if (!beaconSet) 
+            /*if (!beaconSet) 
             {
                 CreateBeacon(pose);
             }
             else
             {
                 activeBeacon.transform.position = pose.position;
-            }
+            }*/
+            CreateBeacon(pose);
         }
     }
 
@@ -62,6 +64,9 @@ public class BeaconController : MonoBehaviour
         Debug.Log("Active beacon is : ", activeBeacon);
         beaconSet = true;
         GameController.Instance.activeBeacon = activeBeacon;
+        GameController.Instance.ChangeScreen(beaconUI, nextUi);
+        GameController.Instance.SetGameState(GameController.GameState.Combat);
+        
     }
 
     private void DeleteBeacon()

@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float projectileLifetime = 2f;
     private float _shotTimer;
     public float shotGapTime = 0.5f;
-    
+
     [HideInInspector]
     public Camera playerCamera;
 
@@ -23,27 +23,28 @@ public class PlayerController : MonoBehaviour
         playerCamera = Camera.main;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (_shotTimer > 0)
         {
             _shotTimer -= Time.deltaTime;
         }
-        if (Input.touchCount > 0 && _shotTimer <= 0)
+    }
+
+
+    public void Shoot()
+    {
+        if (GameController.Instance.ActiveGameState == GameController.GameState.Combat)
         {
-            ShootProjectile();
-            _shotTimer = shotGapTime;
+            if (_shotTimer <= 0)
+            {
+                ActivateProjectile();
+                _shotTimer = shotGapTime;
+            }
         }
     }
 
-    void ShootProjectile()
+    private void ActivateProjectile()
     {
         _projectileOrigin = playerCamera.transform;
         GameObject proj = Instantiate(projectile, _projectileOrigin.position, _projectileOrigin.rotation);

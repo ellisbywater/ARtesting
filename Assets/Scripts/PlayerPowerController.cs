@@ -6,31 +6,25 @@ using UnityEngine;
 public class PlayerPowerController : MonoBehaviour
 {
     public static PlayerPowerController Instance;
-    public GameObject powerPrefab;
-
-    public float powerSpeed;
-
-    public float powerRechargeTime;
+    public Camera cam;
+    public GameObject power;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.touchCount > 0)
+        {
+            PowerActivate();
+        }
     }
 
     public void PowerActivate()
     {
-        
+        Instantiate(power, cam.transform.position, cam.transform.rotation);
     }
 }

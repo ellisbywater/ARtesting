@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
-    public BeaconController BeaconController;
+
+    public GameObject StartingScreen;
+    public GameObject beaconUI;
+
+    [HideInInspector]
     public GameObject activeBeacon;
 
     public enum GameState
     {
-        Start,
+        Default,
         MainMenu,
         Map,
         BeaconDeployment,
         Combat
     }
 
-    public static GameState ActiveGameState;
+    public GameState ActiveGameState = GameState.Default;
 
     private void Awake()
     {
@@ -26,8 +31,23 @@ public class GameController : MonoBehaviour
     }
     
 
+
     public void SetGameState(GameState state)
     {
         ActiveGameState = state;
     }
+
+    public void ChangeScreen(GameObject previous, GameObject next)
+    {
+        previous.SetActive(false);
+        next.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        ChangeScreen(StartingScreen, beaconUI);
+        SetGameState(GameState.BeaconDeployment);
+    }
+    
+
 }
